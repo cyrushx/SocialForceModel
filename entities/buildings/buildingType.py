@@ -1,6 +1,6 @@
 #!/usr/bin/python
 import numpy as np
-from buildingDimensions import wallCoordinates
+from entities.buildings.buildingDimensions import wallCoordinates
 
 class buildingType:
     '''Defines the type of building and packages the dimensions'''

@@ -2,7 +2,7 @@
 from entities.entities import *
 import numpy as np
 
-from pedestrianSettings import *
+from entities.pedestrians.pedestrianSettings import *
 
 from world.worldParameters import *
 

@@ -8,7 +8,7 @@ import matplotlib.pyplot as plt
 from spawners.pedestrianSpawner import *
 from spawners.vehicleSpawner import *
 from entities.pedestrians.pedestrianSettings import *
-from propagateParameters import *
+from behaviours.propagateParameters import *
 from mathlib.ellipse import ellipseSemiMinorAxis, radiusOfEllipse
 
 from mathlib.vectors import *

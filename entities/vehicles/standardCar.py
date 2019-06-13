@@ -2,8 +2,8 @@
 
 import numpy as np
 
-from vehicleType import *
-from vehicleSettings import *
+from entities.vehicles.vehicleType import *
+from entities.vehicles.vehicleSettings import *
 
 class standardCar(vehicle):
     def __init__(self, numberOfEntities, vehType, id, initialConditions, position=np.zeros(3), target=np.zeros(3), velocity=np.zeros(3), target2=np.zeros(3)):

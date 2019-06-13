@@ -1,7 +1,7 @@
 #!/usr/bin/python
 from entities.entities import *
 import numpy as np
-from vehicleSettings import *
+from entities.vehicles.vehicleSettings import *
 
 from world.worldParameters import *
 # class vehicleType:
@@ -35,11 +35,12 @@ class vehicle(entities):
             randomPositionInArea[2]   = 0.
             self.position = randomPositionInArea
             randomTargetInArea = np.random.rand(3)
-            randomTargetInArea[0]   = randomTargetInArea[0] * (target2[0] - velocity[0]) + velocity[0]
-            randomTargetInArea[1]   = randomTargetInArea[1] * (target2[1] - velocity[1]) + velocity[1]
+            randomTargetInArea[0]   = randomTargetInArea[0] * (-target[0] + position[0]) - position[0]
+            randomTargetInArea[1]   = randomTargetInArea[1] * (-target[1] + position[1]) - position[1]
             randomTargetInArea[2]   = 0.
             self.target = randomTargetInArea
             self.velocity = np.array([0., 0., 0.])
+            # print(self.id, self.position, self.target, self.velocity)
         if (initialConditions == 'defined'):
             self.position = position
             self.velocity = velocity

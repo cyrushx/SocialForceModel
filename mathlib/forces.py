@@ -5,7 +5,7 @@ import numpy as np
 import scipy as sp
 import matplotlib.pyplot as plt
 
-from vectors import *
+from mathlib.vectors import *
 
 def pedestrian_repulsive_force(V_12_0, sigma, dt, v_ext, r, r_ext, r_k, r_kext):
     ''' Returns the repulsive force between pedestrians'''

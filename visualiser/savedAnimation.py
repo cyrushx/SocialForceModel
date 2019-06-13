@@ -2,6 +2,7 @@
 
 import matplotlib
 from matplotlib import pyplot as plt
+from matplotlib import animation
 from world.worldParameters import *
 
 from spawners.pedestrianSpawner import *
@@ -9,15 +10,22 @@ from spawners.vehicleSpawner import *
 
 from behaviours.propagateDynamics import *
 
-nbStandardPedestrians = 10
-nbStandardCars =5
+from datetime import datetime
+
+nbStandardPedestrians = 0
+nbStandardCars = 10
+
+position1 = np.array([-worldLength, -worldWidth/2, 0.0]) 
+position2 = np.array([-worldLength+worldLength/4, worldWidth/2, 0.0])
+velocity  = np.zeros(3)
+target = np.array([worldLength, worldWidth/4, 0.0])
 
 pedestrians = spawnPedestrians(nbStandardPedestrians).spawnRandomlyStandardPedestrians()
-cars        = spawnCars(nbStandardCars).spawnRandomlyStandardCars()
+cars        = spawnCars(nbStandardCars).spawnStandardCarsInArea(position1=position1, position2=position2, velocity=velocity, target=target)
 
 figure       = plt.figure()
 axes         = plt.axes(xlim=(-worldLength, worldLength), ylim=(-worldWidth, worldWidth)) 
-pedDots,     = axes.plot([], [], 'bo')
+# pedDots      = axes.plot([], [], 'bo')
  
 carEllipses = [matplotlib.patches.Ellipse((cars[i].position[0], cars[i].position[1]), cars[i].length, cars[i].width, angle=0., color=cars[i].color) for i in range(nbStandardCars)]
 for carEllipse in carEllipses:
@@ -27,14 +35,18 @@ newVelocity = np.zeros((nbStandardPedestrians,3))
 newPosition = np.zeros((nbStandardPedestrians,3)) 
 newVelocityCars = np.zeros((nbStandardCars,3)) 
 newPositionCars = np.zeros((nbStandardCars,3)) 
- 
+
+walls = 0.
+buildings = 0
+
 def init():
-    pedDots.set_data([], [])
+    # pedDots.set_data([], [])
     for i in range(nbStandardCars):
         carEllipses[i].set_visible(False)
-    return pedDots, carEllipses
+    return carEllipses
  
 def animate(frames):
+    # print(frames)
     if frames == 1:
         for i in range(nbStandardCars):
             carEllipses[i].set_visible(True) 
@@ -46,7 +58,7 @@ def animate(frames):
         pedestrians[currentPedestrian].position = newPosition[currentPedestrian]
     x = [pedestrians[i].position[0] for i in range(nbStandardPedestrians)]
     y = [pedestrians[i].position[1] for i in range(nbStandardPedestrians)]   
-    pedDots.set_data(x, y)
+    # pedDots.set_data(x, y)
      
     for currentCar in range(nbStandardCars):
         newVelocityCars[currentCar], newPositionCars[currentCar] = propagateInTime(dt, cars[currentCar], pedestrians, cars, walls, buildings)
@@ -58,8 +70,10 @@ def animate(frames):
             angle = -angle
         carEllipses[currentCar].angle  = degrees(angle)
         carEllipses[currentCar].center = (cars[currentCar].position[0], cars[currentCar].position[1])            
-    return pedDots, carEllipses
+    return carEllipses
 
 anim=animation.FuncAnimation(figure, animate, init_func=init, frames=len(time), interval=20, blit=True)
-anim.save('pedestrian.mp4', bitrate=-1)
-print 'video recorded.'
+
+file_name = 'vehicles_%d_%s.mp4' % (nbStandardCars, datetime.now().strftime('%Y_%m_%d_%H_%M_%S'))
+anim.save(file_name, bitrate=-1)
+print('video recorded.')

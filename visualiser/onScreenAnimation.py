@@ -9,15 +9,20 @@ import matplotlib
 from behaviours.propagateParameters import *
 from behaviours.propagateDynamics import *
 
-from world.worldParameters import *
+from world.worldParameters import worldLength, worldWidth
 
 from mathlib.mathFunctions import *
 
-nbStandardPedestrians = 10
-nbStandardCars = 5
+nbStandardPedestrians = 0
+nbStandardCars = 4
+
+position1 = np.array([-worldLength, -worldWidth/2, 0.0]) 
+position2 = np.array([-worldLength+worldLength/5, worldWidth/2, 0.0])
+velocity  = np.zeros(3)
+target = np.array([worldLength, worldWidth/4, 0.0])
 
 pedestrians = spawnPedestrians(nbStandardPedestrians).spawnRandomlyStandardPedestrians()
-cars        = spawnCars(nbStandardCars).spawnRandomlyStandardCars()
+cars        = spawnCars(nbStandardCars).spawnStandardCarsInArea(position1=position1, position2=position2, velocity=velocity, target=target)
 
 figure  = plt.figure()
 axes    = plt.axes(xlim=(-worldLength, worldLength), ylim=(-worldWidth, worldWidth)) 
@@ -36,7 +41,7 @@ newVelocityCars = np.zeros((nbStandardCars,3))
 newPositionCars = np.zeros((nbStandardCars,3)) 
 
 walls = 0.
-buildings = 0.
+buildings = 2
 
 for t in time:
     plt.cla()

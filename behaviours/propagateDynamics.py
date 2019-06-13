@@ -1,7 +1,7 @@
 #!/usr/bin/python
 
-from propagateParameters import *
-from forces import *
+from behaviours.propagateParameters import *
+from behaviours.forces import *
 
 def propagateInTime(dt, currentEntity, pedestrians, cars, walls, buildings):
     '''Propagates the motion of a single pedestrian in time using adapted RK4 method'''
