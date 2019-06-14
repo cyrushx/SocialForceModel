@@ -1,4 +1,4 @@
 #!/usr/bin/python
 
-worldLength = 50. 
+worldLength = 100.
 worldWidth = 50.

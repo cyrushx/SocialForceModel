@@ -13,18 +13,20 @@ from behaviours.propagateDynamics import *
 from datetime import datetime
 
 nbStandardPedestrians = 0
-nbStandardCars = 10
+nbStandardCars = 5
 
-position1 = np.array([-worldLength, -worldWidth/2, 0.0]) 
-position2 = np.array([-worldLength+worldLength/4, worldWidth/2, 0.0])
-velocity  = np.zeros(3)
-target = np.array([worldLength, worldWidth/4, 0.0])
+starting_region_lowerleft = np.array([-worldLength, -worldWidth/3, 0.0]) 
+starting_region_upperright = np.array([-worldLength+worldLength/8, worldWidth/3, 0.0])
+starting_velocity  = np.zeros(3)
+target = np.array([worldLength, worldWidth/3, 0.0])
 
 pedestrians = spawnPedestrians(nbStandardPedestrians).spawnRandomlyStandardPedestrians()
-cars        = spawnCars(nbStandardCars).spawnStandardCarsInArea(position1=position1, position2=position2, velocity=velocity, target=target)
+cars        = spawnCars(nbStandardCars).spawnStandardCarsInArea(position1=starting_region_lowerleft, 
+    position2=starting_region_upperright, velocity=starting_velocity, target=target)
 
 figure       = plt.figure()
 axes         = plt.axes(xlim=(-worldLength, worldLength), ylim=(-worldWidth, worldWidth)) 
+plt.axis('scaled')
 # pedDots      = axes.plot([], [], 'bo')
  
 carEllipses = [matplotlib.patches.Ellipse((cars[i].position[0], cars[i].position[1]), cars[i].length, cars[i].width, angle=0., color=cars[i].color) for i in range(nbStandardCars)]
@@ -50,7 +52,7 @@ def animate(frames):
     if frames == 1:
         for i in range(nbStandardCars):
             carEllipses[i].set_visible(True) 
-    t = time[frames]
+    t = simulation_frames[frames]
     for currentPedestrian in range(nbStandardPedestrians):
         newVelocity[currentPedestrian], newPosition[currentPedestrian] = propagateInTime(dt, pedestrians[currentPedestrian], pedestrians, cars, walls, buildings)
     for currentPedestrian in range(nbStandardPedestrians):
@@ -72,8 +74,8 @@ def animate(frames):
         carEllipses[currentCar].center = (cars[currentCar].position[0], cars[currentCar].position[1])            
     return carEllipses
 
-anim=animation.FuncAnimation(figure, animate, init_func=init, frames=len(time), interval=20, blit=True)
+anim=animation.FuncAnimation(figure, animate, init_func=init, frames=len(simulation_frames), interval=20, blit=True)
 
-file_name = 'vehicles_%d_%s.mp4' % (nbStandardCars, datetime.now().strftime('%Y_%m_%d_%H_%M_%S'))
+file_name = '%d_vehicles_%s.mp4' % (nbStandardCars, datetime.now().strftime('%Y_%m_%d_%H_%M_%S'))
 anim.save(file_name, bitrate=-1)
 print('video recorded.')

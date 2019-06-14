@@ -31,12 +31,12 @@ class vehicle(entities):
         if (initialConditions == 'area'):
             randomPositionInArea = np.random.rand(3)
             randomPositionInArea[0]   = randomPositionInArea[0] * (target[0] - position[0]) + position[0]
-            randomPositionInArea[1]   = randomPositionInArea[1] * (target[1] - position[1]) + position[1]
+            randomPositionInArea[1]   = 1.0 * self.id / (numberOfEntities - 1) * (target[1] - position[1]) + position[1]
             randomPositionInArea[2]   = 0.
             self.position = randomPositionInArea
             randomTargetInArea = np.random.rand(3)
-            randomTargetInArea[0]   = randomTargetInArea[0] * (-target[0] + position[0]) - position[0]
-            randomTargetInArea[1]   = randomTargetInArea[1] * (-target[1] + position[1]) - position[1]
+            randomTargetInArea[0]   = target2[0] + randomTargetInArea[0]*20
+            randomTargetInArea[1]   = randomTargetInArea[1] * (target2[1] - position[1]) + position[1]
             randomTargetInArea[2]   = 0.
             self.target = randomTargetInArea
             self.velocity = np.array([0., 0., 0.])
